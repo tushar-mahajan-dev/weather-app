@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Simple Weather App</title>
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h1 {
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+.search-box {
+    margin-top: 20px;
+}
+
+#city-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#search-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.weather-info {
+    margin-top: 20px;
+}
+
+#city-name {
+    font-size: 24px;
+}
+
+#temperature {
+    font-size: 20px;
+}
+
+#weather-description {
+    font-size: 16px;
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <div class="search-box">
+            <input type="text" id="city-input" placeholder="Enter city name">
+            <button id="search-button">Get Weather</button>
+        </div>
+        <div class="weather-info">
+            <h2 id="city-name"></h2>
+            <p id="temperature"></p>
+            <p id="weather-description"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const apiKey = "b4a00b94d6dd64f1ab38090fca94f8f2"; // Replace with your OpenWeatherMap API key
+
+    const cityInput = document.getElementById("city-input");
+    const searchButton = document.getElementById("search-button");
+    const cityName = document.getElementById("city-name");
+    const temperature = document.getElementById("temperature");
+    const weatherDescription = document.getElementById("weather-description");
+
+    searchButton.addEventListener("click", function () {
+        const city = cityInput.value;
+
+        if (city.trim() === "") {
+            alert("Please enter a city name.");
+            return;
+        }
+
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+            .then((response) => response.json())
+            .then((data) => {
+                cityName.textContent = data.name;
+                temperature.textContent = `Temperature: ${data.main.temp}°C`;
+                weatherDescription.textContent = `Weather: ${data.weather[0].description}`;
+            })
+            .catch((error) => {
+                console.error("Error fetching weather data:", error);
+                alert("An error occurred while fetching weather data.");
+            });
+    });
+});
+
+
+</script>
+</html>
